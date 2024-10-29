@@ -17,6 +17,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, std::stri
     return newLength;
 }
 
+
 // Function to fetch stock data using curl
 std::string fetchStockData(const std::string &symbol, const std::string &apiKey)
 {
@@ -50,12 +51,28 @@ std::string fetchStockData(const std::string &symbol, const std::string &apiKey)
 
 int main()
 {
-    std::string symbol = "AAPL";             // Example stock symbol (Apple Inc.)
-    std::string apiKey = "AWX362W64AMJLHG4"; // Replace with your Alpha Vantage API key
-    std::string stockData = fetchStockData(symbol, apiKey);
+    std::string symbol[] = {"AAPL","GOOGL","MSFT","AMZN","META","TSLA","NFLX","NVDA","DIS","JPM"};     // Example stock symbol (Apple Inc.)
+    std::string apiKey = "9D667TJ28IKVDI27"; // Replace with your Alpha Vantage API key
+// AAPL - Apple Inc.
+// GOOGL - Alphabet Inc. (Google)
+// MSFT - Microsoft Corporation
+// AMZN - Amazon.com Inc.
+// META - Meta Platforms Inc. (formerly Facebook)
+// TSLA - Tesla Inc.
+// NFLX - Netflix Inc.
+// NVDA - NVIDIA Corporation
+// DIS - The Walt Disney Company
+// JPM - JPMorgan Chase & Co.
+
+    for(int i=0;i<10;i++)
+    {
+        std::cout<<"stock for "<<symbol[i];
+        std::string stockData = fetchStockData(symbol[i], apiKey);
+        std::cout << stockData << std::endl;
+    }
 
     // Output the fetched data (JSON format)
-    std::cout << stockData << std::endl;
+
 
     return 0;
 }
