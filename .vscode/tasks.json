@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build with curl",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "main.cpp",
+                "-o",
+                "StockMarketSimulator",
+                "-I", "${env:CURL_INCLUDE}",  // Placeholder for curl include path
+                "-L", "${env:CURL_LIB}",      // Placeholder for curl library path
+                "-lcurl"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Task to build C++ files with libcurl."
+        }
+    ]
+}
