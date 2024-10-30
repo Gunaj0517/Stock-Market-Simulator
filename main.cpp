@@ -53,16 +53,16 @@ int main()
 {
     std::string symbol[] = {"AAPL","GOOGL","MSFT","AMZN","META","TSLA","NFLX","NVDA","DIS","JPM"};     // Example stock symbol (Apple Inc.)
     std::string apiKey = "9D667TJ28IKVDI27"; // Replace with your Alpha Vantage API key
-// AAPL - Apple Inc.
-// GOOGL - Alphabet Inc. (Google)
-// MSFT - Microsoft Corporation
-// AMZN - Amazon.com Inc.
-// META - Meta Platforms Inc. (formerly Facebook)
-// TSLA - Tesla Inc.
-// NFLX - Netflix Inc.
-// NVDA - NVIDIA Corporation
-// DIS - The Walt Disney Company
-// JPM - JPMorgan Chase & Co.
+    // AAPL - Apple Inc.
+    // GOOGL - Alphabet Inc. (Google)
+    // MSFT - Microsoft Corporation
+    // AMZN - Amazon.com Inc.
+    // META - Meta Platforms Inc. (formerly Facebook)
+    // TSLA - Tesla Inc.
+    // NFLX - Netflix Inc.
+    // NVDA - NVIDIA Corporation
+    // DIS - The Walt Disney Company
+    // JPM - JPMorgan Chase & Co.
 
     for(int i=0;i<10;i++)
     {
