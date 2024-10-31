@@ -4,12 +4,11 @@
 #include<ctime>
 #include<fstream>
 #include<vector>
-#include"curl_wrapper.h"
 
 #include <cstdlib> //for using system()
 
 using namespace std;
-const char* exePath = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
+const char* exePath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
 class Trader;
 void portfolio(Trader &t);
 class Stock{
@@ -118,7 +117,7 @@ bool checkPasswordMatch(const string& inputID, const string& inputPassword) {
 
 class Market{
     private:
-    map<Stock>mstocks;
+    map<string,Stock>stocks;
 };
 
 class Transaction{
@@ -144,63 +143,73 @@ void buystock(Trader &t1)
         case 1:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for AAPL:";
             cin>>qty;
+            break;
 
         }
         case 2:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for GOOGL:";
             cin>>qty;
+            break;
         }
         case 3:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for MSFT:";
             cin>>qty;
+            break;
         }
         case 4:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for AMZN:";
             cin>>qty;
+            break;
         }
         case 5:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for META:";
             cin>>qty;
+            break;
         }
         case 6:
         { 
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for TSLA:";
             cin>>qty;
+            break;
         }
         case 7:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for NFLX:";
             cin>>qty;
+            break;
         }
         case 8:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for NVDA:";
             cin>>qty;
+            break;
         }
         case 9:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for DIS:";
             cin>>qty;
+            break;
         }
         case 10:
         {
             int qty;
-            cout<<"enter quantity you want to buy:";
+            cout<<"enter quantity you want to buy for JPM:";
             cin>>qty;
+            break;
         }
     }
 }
@@ -221,6 +230,7 @@ void portfolio(Trader &t)
         int result = system(exePath);
         if (result == 0) {
             std::cout << "Simulator executed successfully." << std::endl;
+            buystock(t);
         } else {
             std::cerr << "Failed to execute the simulator." << std::endl;
         }
@@ -228,7 +238,7 @@ void portfolio(Trader &t)
     }
     else if(ch==3)
     {
-        buystock(t);
+
     }
 }
 
