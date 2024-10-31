@@ -4,11 +4,15 @@
 #include<ctime>
 #include<fstream>
 #include<vector>
+#include"linkedlistfunction.cpp"
 
 #include <cstdlib> //for using system()
 
 using namespace std;
-const char* exePath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
+const char* exePath = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
+
+Node *STOCKS=createStockList();
+
 class Trader;
 void portfolio(Trader &t);
 class Stock{
@@ -41,7 +45,8 @@ private:
     string name;
     string password;
     double balance;
-    map<Stock,int>assets;
+    map<string,int,int>assets;
+    //
 public:
     friend void portfolio(Trader &t);
     void createUser() {
@@ -134,17 +139,26 @@ class Transaction{
 
 void buystock(Trader &t1)
 {
-    int choice;
-    cout<<"enter your choice for which you want to buy stock:";
-    cout<<"1)AAPL   2)GOOGL   3)MSFT   4)AMZN   5)META   6)TSLA   7)NFLX   8)NVDA   9)DIS   10)JPM";
-    cin>>choice;
-    switch(choice)
+    int stockChoice;
+    cout << "Choose the stock you want to view for purchase:\n";
+    cout << "1) AAPL   2) GOOGL   3) MSFT   4) AMZN   5) META\n";
+    cout << "6) TSLA   7) NFLX    8) NVDA   9) DIS    10) JPM\n";
+    cout << "Enter the number of the stock: ";
+    cin >> stockChoice;
+    string symbols[MAX_STOCKS] = {"AAPL", "GOOGL", "MSFT", "AMZN", "META", "TSLA", "NFLX", "NVDA", "DIS", "JPM"};
+    switch(stockChoice)
     {
         case 1:
         {
-            int qty;
-            cout<<"enter quantity you want to buy for AAPL:";
-            cin>>qty;
+            if (stockChoice >= 1 && stockChoice <= MAX_STOCKS) {
+                string selectedSymbol = symbols[stockChoice - 1];
+                STOCKS.(head, selectedSymbol);
+                cout << "Enter quantity you want to buy for " << selectedSymbol << ": ";
+                cin >> quantity;
+                cout << "You selected to buy " << quantity << " units of " << selectedSymbol << ".\n";
+            } else {
+                cout << "Invalid choice.\n";
+            }
             break;
 
         }
