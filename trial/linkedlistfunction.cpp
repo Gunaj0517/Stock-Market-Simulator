@@ -1,10 +1,11 @@
+#include"linkedlistfunction.h"
 #include <iostream>
 #include <string>
 
 using namespace std;
 
 // Constants
-int MAX_STOCKS = 10;  // Maximum number of stocks we can store
+const int MAX_STOCKS = 10;  // Maximum number of stocks we can store
 
 struct Node {
     string symbol;    // Stock symbol

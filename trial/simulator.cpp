@@ -4,7 +4,7 @@
 #include<ctime>
 #include<fstream>
 #include<vector>
-#include"linkedlistfunction.cpp"
+#include"linkedlistfunction.h"
 
 #include <cstdlib> //for using system()
 
@@ -150,17 +150,18 @@ void buystock(Trader &t1)
     {
         case 1:
         {
-            if (stockChoice >= 1 && stockChoice <= MAX_STOCKS) {
-                string selectedSymbol = symbols[stockChoice - 1];
-                STOCKS.(head, selectedSymbol);
-                cout << "Enter quantity you want to buy for " << selectedSymbol << ": ";
-                cin >> quantity;
-                cout << "You selected to buy " << quantity << " units of " << selectedSymbol << ".\n";
-            } else {
-                cout << "Invalid choice.\n";
-            }
-            break;
-
+        if (stockChoice >= 1 && stockChoice <= MAX_STOCKS) {
+            string selectedSymbol = symbols[stockChoice - 1];
+            show(STOCKS, selectedSymbol); // Call the function from linkedlist.cpp
+            cout << "Enter quantity you want to buy for " << selectedSymbol << ": ";
+            int quantity;
+            cin >> quantity;
+            cout << "You selected to buy " << quantity << " units of " << selectedSymbol << ".\n";
+        }
+        else {
+        cout << "Invalid choice.\n";
+    }
+    break;
         }
         case 2:
         {
