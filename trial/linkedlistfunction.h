@@ -1,7 +1,6 @@
 // linkedlist.h
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
-
 #include <string>
 
 using namespace std;

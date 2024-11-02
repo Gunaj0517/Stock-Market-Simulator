@@ -78,7 +78,7 @@ void deleteList(Node*& head) {
         delete temp;
     }
 }
-
+#ifndef MAIN_FUNCTION_LINKEDLIST
 int main() {
     Node* head = createStockList(); // Create the linked list
     int choice;
@@ -107,3 +107,4 @@ int main() {
 
     return 0;
 }
+#endif
