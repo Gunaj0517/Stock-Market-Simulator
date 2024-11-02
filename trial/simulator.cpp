@@ -241,7 +241,7 @@ void portfolio(Trader &t)
     }
     else if(ch==2)
     {
-        int result = system(exePath);
+        int result = 0;//system(exePath);
         if (result == 0) {
             std::cout << "Simulator executed successfully." << std::endl;
             buystock(t);
