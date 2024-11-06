@@ -131,7 +131,7 @@ public:
     }
 
     // View portfolio as a Trader member function
-    void viewPortfolio() {
+    void viewPortfolio(Trader &t) {
         ifstream file("trader_portfolio.txt");
         if (!file.is_open()) {
             cerr << "Error opening portfolio file." << endl;
@@ -148,11 +148,13 @@ public:
             if (traderID == id) {
                 hasStocks = true;
                 cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << endl;
+                portfolio(t);
             }
         }
 
         if (!hasStocks) {
             cout << "No stocks in your portfolio.\n";
+            portfolio(t);
         }
         file.close();
     }
@@ -257,7 +259,7 @@ void buystock(Trader &t1) {
 
 void sell(Trader &t2) {
     cout << "Your current portfolio:\n";
-    t2.viewPortfolio();
+    t2.viewPortfolio(t2);
 
     string stockSymbol;
     cout << "Enter the symbol of the stock you want to sell: ";
@@ -362,7 +364,7 @@ void portfolio(Trader &t) {
     cout << "Enter your choice: 1) View stock 2) Buy stock 3) Sell stock 4) Exit\n";
     cin >> ch;
     if (ch == 1) {
-        t.viewPortfolio();
+        t.viewPortfolio(t);
     } else if (ch == 2) {
         int result = 0; // Uncomment if system(exePath) is used
         if (result == 0) {
@@ -394,6 +396,4 @@ int main() {
     return 0;
 }
 
-
 /* g++ simulator.cpp linkedlistfunction.cpp -o simulator -DMAIN_FUNCTION_LINKEDLIST */
-
