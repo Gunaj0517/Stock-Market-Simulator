@@ -5,7 +5,6 @@
 #include <fstream>
 #include <vector>
 #include "linkedlistfunction.h"
-#include "predictor.h"
 
 #include <cstdlib> // for using system()
 
@@ -47,7 +46,7 @@ public:
     friend void sell(Trader &t2);
     friend void buystock(Trader &t1);
     friend void updateUserBalance(Trader &t);
-    //friend void viewstock(Trader &t1);
+    friend void viewstock(Trader &t1);
     friend void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSymbol, Node *STOCKS);
 
     void createUser() {
@@ -132,7 +131,7 @@ public:
     }
 
     // View portfolio as a Trader member function
-    void viewPortfolio(Trader &t) {
+    void viewPortfolio() {
         ifstream file("trader_portfolio.txt");
         if (!file.is_open()) {
             cerr << "Error opening portfolio file." << endl;
@@ -149,47 +148,12 @@ public:
             if (traderID == id) {
                 hasStocks = true;
                 cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << endl;
-                portfolio(t);
             }
         }
 
         if (!hasStocks) {
             cout << "No stocks in your portfolio.\n";
-            portfolio(t);
         }
-        file.close();
-    }
-    void displayPricePrediction() {
-        ifstream file("trader_portfolio.txt");
-        if (!file.is_open()) {
-            cerr << "Error opening portfolio file." << endl;
-            return;
-        }
-        string traderID, stockSymbol;
-        double stockPrice;
-        int stockQuantity;
-        bool hasStocks = false;
-
-        while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> balance) {
-            if (traderID == id) {
-                hasStocks = true;
-            }
-        }
-        double openingPrice = stockPrice;
-        int sampleCount = 15;
-        double minRange = openingPrice - 10;
-        double maxRange = openingPrice + 10;
-        vector<double> prices = generatePrices(openingPrice, sampleCount, minRange, maxRange);
-
-        TreeNode* root = nullptr;
-        for (double price : prices) {
-            root = insert(root, price);
-        }
-
-        double minPrice = findMin(root);
-        double maxPrice = findMax(root);
-
-        cout << "Predicted Price Range: " << minPrice << " to " << maxPrice << std::endl;
         file.close();
     }
 };
@@ -293,7 +257,7 @@ void buystock(Trader &t1) {
 
 void sell(Trader &t2) {
     cout << "Your current portfolio:\n";
-    t2.viewPortfolio(t2);
+    t2.viewPortfolio();
 
     string stockSymbol;
     cout << "Enter the symbol of the stock you want to sell: ";
@@ -391,6 +355,7 @@ void sell(Trader &t2) {
     portfolio(t2);
 }
 
+
 void portfolio(Trader &t) {
     cout << "Welcome " << t.name << endl;
     cout << "Your current balance is: " << t.balance << endl;
@@ -398,7 +363,7 @@ void portfolio(Trader &t) {
     cout << "Enter your choice: 1) View stock 2) Buy stock 3) Sell stock 4) Exit\n";
     cin >> ch;
     if (ch == 1) {
-        t.viewPortfolio(t);
+        t.viewPortfolio();
     } else if (ch == 2) {
         int result = 0; // Uncomment if system(exePath) is used
         if (result == 0) {
@@ -408,8 +373,6 @@ void portfolio(Trader &t) {
             cerr << "Failed to execute the simulator." << endl;
         }
     } else if (ch == 3) {
-        displayPricePrediction();
-    } else if (ch == 4) {
         sell(t);
     } else {
         exit(0);
@@ -432,4 +395,6 @@ int main() {
     return 0;
 }
 
+
 /* g++ simulator.cpp linkedlistfunction.cpp -o simulator -DMAIN_FUNCTION_LINKEDLIST */
+
