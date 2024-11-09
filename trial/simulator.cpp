@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include "linkedlistfunction.h"
+#include "predictor.h"
 
 #include <cstdlib> // for using system()
 
@@ -46,7 +47,7 @@ public:
     friend void sell(Trader &t2);
     friend void buystock(Trader &t1);
     friend void updateUserBalance(Trader &t);
-    friend void viewstock(Trader &t1);
+    //friend void viewstock(Trader &t1);
     friend void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSymbol, Node *STOCKS);
 
     void createUser() {
@@ -156,6 +157,39 @@ public:
             cout << "No stocks in your portfolio.\n";
             portfolio(t);
         }
+        file.close();
+    }
+    void displayPricePrediction() {
+        ifstream file("trader_portfolio.txt");
+        if (!file.is_open()) {
+            cerr << "Error opening portfolio file." << endl;
+            return;
+        }
+        string traderID, stockSymbol;
+        double stockPrice;
+        int stockQuantity;
+        bool hasStocks = false;
+
+        while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> balance) {
+            if (traderID == id) {
+                hasStocks = true;
+            }
+        }
+        double openingPrice = stockPrice;
+        int sampleCount = 15;
+        double minRange = openingPrice - 10;
+        double maxRange = openingPrice + 10;
+        vector<double> prices = generatePrices(openingPrice, sampleCount, minRange, maxRange);
+
+        TreeNode* root = nullptr;
+        for (double price : prices) {
+            root = insert(root, price);
+        }
+
+        double minPrice = findMin(root);
+        double maxPrice = findMax(root);
+
+        cout << "Predicted Price Range: " << minPrice << " to " << maxPrice << std::endl;
         file.close();
     }
 };
@@ -374,6 +408,8 @@ void portfolio(Trader &t) {
             cerr << "Failed to execute the simulator." << endl;
         }
     } else if (ch == 3) {
+        displayPricePrediction();
+    } else if (ch == 4) {
         sell(t);
     } else {
         exit(0);
