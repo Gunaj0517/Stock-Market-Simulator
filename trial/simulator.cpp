@@ -10,6 +10,7 @@
 
 using namespace std;
 const char* exePath = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
+const char* exeFluctuator = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\fluctuator.exe";
 
 void Cleardisplay() {
     system("cls"); // Clear the console screen
@@ -454,7 +455,7 @@ void returnPortfolioValues(Trader &t)
 void portfolio(Trader &t) {
     returnPortfolioValues(t);
     int ch;
-    cout << "Enter your choice: 1) View stock 2) Buy stock 3) Sell stock 4) Exit\n";
+    cout << "Enter your choice: 1) View stock 2) Buy stock 3) Sell stock 4) Fluctuator 5) Exit\n";
     cout<<endl;
     cin >> ch;
     if (ch == 1) {
@@ -474,6 +475,10 @@ void portfolio(Trader &t) {
     } else if (ch == 3) {
         Cleardisplay();
         sell(t);
+    } else if (ch == 4) {
+        Cleardisplay();
+        system(exeFluctuator);
+        portfolio(t);
     } else {
         exit(0);
     }
