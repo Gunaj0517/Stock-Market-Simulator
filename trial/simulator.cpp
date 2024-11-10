@@ -147,12 +147,14 @@ public:
         while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> balance) {
             if (traderID == id) {
                 hasStocks = true;
-                cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << endl;
+                cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << balance <<endl<<endl<<endl;
+                portfolio(*this);
             }
         }
 
         if (!hasStocks) {
-            cout << "No stocks in your portfolio.\n";
+            cout << "No stocks in your portfolio.\n"<<endl<<endl;
+            portfolio(*this);
         }
         file.close();
     }
