@@ -1,16 +1,14 @@
 #include <iostream>
 #include <vector>
-#include "predictor.h"
 #include <random>
 
 using namespace std;
+
 struct TreeNode {
     double price;
     TreeNode *left, *right;
     TreeNode(double p) : price(p), left(nullptr), right(nullptr) {}
 };
-
-//TreeNode::TreeNode(double p) : price(p), left(nullptr), right(nullptr) {}
 
 TreeNode* insert(TreeNode* node, double price) {
     if (node == nullptr) {
@@ -25,19 +23,19 @@ TreeNode* insert(TreeNode* node, double price) {
 }
 
 double findMin(TreeNode* node) {
-    TreeNode* current = node;
-    while (current && current->left != nullptr) {
-        current = current->left;
+    if (!node) return -1;
+    while (node->left != nullptr) {
+        node = node->left;
     }
-    return current ? current->price : -1;
+    return node->price;
 }
 
 double findMax(TreeNode* node) {
-    TreeNode* current = node;
-    while (current && current->right != nullptr) {
-        current = current->right;
+    if (!node) return -1;
+    while (node->right != nullptr) {
+        node = node->right;
     }
-    return current ? current->price : -1;
+    return node->price;
 }
 
 vector<double> generatePrices(double openingPrice, int count, double minRange, double maxRange) {
@@ -51,15 +49,30 @@ vector<double> generatePrices(double openingPrice, int count, double minRange, d
     return prices;
 }
 
-/*
 int main() {
-    double openingPrice = 233.5;
-    int sampleCount = 15;
-    double minRange = openingPrice - 10;
-    double maxRange = openingPrice + 10;
+    double openingPrice;
+    int sampleCount=10;
+    double minRange, maxRange;
 
+    string selectedSymbol;
+    cout<<"Enter the stock symbol for which you want to find the Predicted Values: ";
+    cin>>selectedSymbol;
+    string symbols[10] = {"AAPL", "GOOGL", "MSFT", "AMZN", "META","TSLA", "NFLX", "NVDA", "DIS", "JPM"};
+    double price[10] = {230.665, 173.52, 416.3, 191.6, 573.25, 256.17, 755.3, 137.94, 95.02, 224.74};
+
+    for(int i=0;i<10;i++)
+    {
+        if(selectedSymbol==symbols[i])
+        {
+            openingPrice=price[i];
+            minRange=openingPrice-10;
+            maxRange=openingPrice+10;
+        }
+
+    }
     vector<double> prices = generatePrices(openingPrice, sampleCount, minRange, maxRange);
 
+    // Building the BST with generated prices
     TreeNode* root = nullptr;
     for (double price : prices) {
         root = insert(root, price);
@@ -70,8 +83,7 @@ int main() {
     double predictedPrice = root ? root->price : -1;
 
     cout << "Predicted Price Range lies between: " << minPrice << " and " << maxPrice << endl;
-    cout << "Predicted Price (Root of BST): " << predictedPrice << endl;
+    cout << "Predicted Price: " << predictedPrice << endl;  //root of bst
 
     return 0;
 }
-*/

@@ -55,12 +55,18 @@ int main() {
         string symbol;
         double price;
 
-        cout << "Enter the symbol for stock " << i + 1 << ": ";
-        cin >> symbol;
+        cout<<"Enter the stock symbol for which you want to find the Predicted Values: ";
+         cin>>symbol;
+        string symbols[10] = {"AAPL", "GOOGL", "MSFT", "AMZN", "META","TSLA", "NFLX", "NVDA", "DIS", "JPM"};
+        double prices[10] = {230.665, 173.52, 416.3, 191.6, 573.25, 256.17, 755.3, 137.94, 95.02, 224.74};
 
-        cout << "Enter the initial price for stock " << symbol << ": ";
-        cin >> price;
-
+        for(int i=0;i<10;i++)
+        {
+            if(symbol==symbols[i])
+            {
+                price=prices[i];
+            }
+        }
         Stock stock(symbol, price);
         stockQueue.push(stock);
     }
