@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream> 
 #include <cstring>
 #include <map>
 #include <ctime>
@@ -328,7 +328,7 @@ void sell(Trader &t2) {
     Node *stockNode = findStockNode(STOCKS, stockSymbol);
     if (stockNode == nullptr) {
         cout << "Stock not found!\n";
-        return;
+        portfolio(t2);
     }
 
     ifstream file("trader_portfolio.txt");
@@ -341,12 +341,14 @@ void sell(Trader &t2) {
     double stockPrice;
     int stockQuantity;
     bool foundStock = false;
-    int traderStockQuantity = 0; // To track how much the trader has
+    int traderStockQuantity = 0;
+    int bal=0;
 
     // Read through the portfolio to find the stock
-    while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> t2.balance) {
+    while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal) {
         if (traderID == t2.id && stockSymbol == stockNode->symbol) {
             traderStockQuantity = stockQuantity;
+            //t2.balance=bal;
             foundStock = true;
             break;
         }
@@ -368,12 +370,12 @@ void sell(Trader &t2) {
         cout << "Invalid quantity!\n";
         return;
     }
-
-    // Update trader's balance and save to file
     double sellPrice = stockNode->price;
-    t2.balance += sellPrice * sellQuantity; // Update the balance
 
-    // Update the trader's portfolio
+    cout<<t2.balance<<" and "<<bal<<" and "<<sellPrice<<" and "<<sellQuantity<<endl;
+    t2.balance += (sellPrice * sellQuantity); // Update the balance
+    cout<<t2.balance<<" and "<<bal<<" and "<<sellPrice<<" and "<<sellQuantity<<endl;
+
     ofstream outFile("trader_portfolio_temp.txt");
     if (!outFile.is_open()) {
         cerr << "Error opening temp portfolio file." << endl;
@@ -387,7 +389,7 @@ void sell(Trader &t2) {
     }
 
     // Copy data to a temporary file and update stock quantity
-    while (inFile >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> t2.balance) {
+    while (inFile >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal) {
         if (traderID == t2.id && stockSymbol == stockNode->symbol) {
             // Subtract the quantity being sold
             stockQuantity -= sellQuantity;
@@ -398,8 +400,7 @@ void sell(Trader &t2) {
                 cout << "All shares of " << stockSymbol << " sold.\n";
             }
         } else {
-            // Copy the stock entry as is
-            outFile << traderID << " " << stockSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << endl;
+                outFile << traderID << " " << stockSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << endl;
         }
     }
 
