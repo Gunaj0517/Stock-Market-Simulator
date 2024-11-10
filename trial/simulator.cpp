@@ -11,6 +11,46 @@
 using namespace std;
 const char* exePath = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
 
+void Cleardisplay() {
+    system("cls"); // Clear the console screen
+}
+void clearScreen()
+{
+    char ch;
+    cout<<"Enter any key to continue: ";
+    cin>>ch;
+    Cleardisplay();
+}
+void blue()
+{
+    printf("\033[0;34m");
+}
+void purple()
+{
+    printf("\033[0;35m");
+}
+void red()
+{
+    printf("\033[0;31m");
+}
+void green()
+{
+    printf("\033[0;32m");
+}
+void yellow()
+{
+    printf("\033[0;33m");
+}
+void reset()
+{
+    printf("\033[0m");
+}
+void highlight()
+{
+    printf("\033[0;41m");
+}
+
+
 Node *STOCKS = createStockList();
 class Trader;
 void portfolio(Trader &t);
@@ -42,12 +82,31 @@ private:
     double balance;
 
 public:
+    friend void returnPortfolioValues(Trader &t);
     friend void portfolio(Trader &t);
     friend void sell(Trader &t2);
     friend void buystock(Trader &t1);
     friend void updateUserBalance(Trader &t);
-    friend void viewstock(Trader &t1);
     friend void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSymbol, Node *STOCKS);
+    
+    void login() {
+        string inputID, inputPassword;
+        cout << "Enter your Login ID: ";
+        cin >> inputID;
+        cout << "Enter your Password: ";
+        cin >> inputPassword;
+        if (checkPasswordMatch(inputID, inputPassword)) {
+            Cleardisplay();
+            yellow();
+            cout << "Logged in successfully!" << endl;
+            reset();
+            cout<<endl;
+            portfolio(*this);
+        } else {
+            cout << "Re-enter your ID and Password!" << endl;
+            login();
+        }
+    }
 
     void createUser() {
         ofstream file("user_data.txt", ios::app); // Append mode to add multiple users
@@ -70,6 +129,8 @@ public:
         file.close();
 
         cout << "Account created successfully and your current balance is: " << balance << " !" << endl;
+        clearScreen();
+        login();
     }
 
     bool checkPasswordMatch(const string& inputID, const string& inputPassword) {
@@ -99,22 +160,7 @@ public:
         }
         file.close();
         return matchFound;
-    }
-
-    void login() {
-        string inputID, inputPassword;
-        cout << "Enter your Login ID: ";
-        cin >> inputID;
-        cout << "Enter your Password: ";
-        cin >> inputPassword;
-        if (checkPasswordMatch(inputID, inputPassword)) {
-            cout << "Logged in successfully!" << endl;
-            portfolio(*this);
-        } else {
-            cout << "Re-enter your ID and Password!" << endl;
-            login();
-        }
-    }
+    }    
 
     // Save purchase to file as a Trader member function
     void savePurchaseToFile(const Stock &stock, int quantity) {
@@ -138,6 +184,7 @@ public:
             return;
         }
 
+        Cleardisplay();
         cout << "Reading portfolio for ID: " << id << endl;
         string traderID, stockSymbol;
         double stockPrice;
@@ -147,13 +194,24 @@ public:
         while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> balance) {
             if (traderID == id) {
                 hasStocks = true;
-                cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << balance <<endl<<endl<<endl;
-                portfolio(*this);
+                cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << "\t" << balance <<endl;
             }
+        }
+
+        int val;
+        cout<<endl<<"Enter 1 to Move to Home Page:\nEnter 2 to Sell Stocks: ";
+        cin>>val;
+        if(val==2){
+            return;
+        }
+        else{
+            clearScreen();
+            portfolio(*this);
         }
 
         if (!hasStocks) {
             cout << "No stocks in your portfolio.\n"<<endl<<endl;
+            clearScreen();
             portfolio(*this);
         }
         file.close();
@@ -215,7 +273,8 @@ void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSym
     }
 
     Stock selectedStock(selectedSymbol, selectedStockNode->price, selectedStockNode->qtyAvailable);
-
+    //stock object
+    
     cout << "Enter quantity you want to buy for " << selectedSymbol << ": ";
     int quantity;
     cin >> quantity;
@@ -243,6 +302,7 @@ void buystock(Trader &t1) {
     cout << "Choose the stock you want to view for purchase:\n";
     cout << "1) AAPL   2) GOOGL   3) MSFT   4) AMZN   5) META\n";
     cout << "6) TSLA   7) NFLX    8) NVDA   9) DIS    10) JPM\n";
+    cout<<endl;
     cout << "Enter the number of the stock: ";
     cin >> stockChoice;
 
@@ -260,7 +320,7 @@ void buystock(Trader &t1) {
 void sell(Trader &t2) {
     cout << "Your current portfolio:\n";
     t2.viewPortfolio();
-
+    
     string stockSymbol;
     cout << "Enter the symbol of the stock you want to sell: ";
     cin >> stockSymbol;
@@ -271,7 +331,6 @@ void sell(Trader &t2) {
         return;
     }
 
-    // Check how much of the stock the trader owns
     ifstream file("trader_portfolio.txt");
     if (!file.is_open()) {
         cerr << "Error opening portfolio file." << endl;
@@ -357,24 +416,62 @@ void sell(Trader &t2) {
     portfolio(t2);
 }
 
+void returnPortfolioValues(Trader &t)
+{
+    ifstream file("user_data.txt");
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file.\n";
+        return ;
+    }
+
+    string searchID;
+    searchID=t.id;
+
+    string id, name, password;
+    int balance;
+    bool found = false;
+
+    while (file >> id >> name >> password >> balance) {
+        if (id == searchID) {
+            t.balance=balance;
+            green();
+            cout << "Welcome " << name << std::endl;
+            cout << "Your Current Balance is: " << balance << std::endl;
+            reset();
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cout << "ID not found.\n";
+    }
+
+    file.close();
+    return ;
+}
 
 void portfolio(Trader &t) {
-    cout << "Welcome " << t.name << endl;
-    cout << "Your current balance is: " << t.balance << endl;
+    returnPortfolioValues(t);
     int ch;
     cout << "Enter your choice: 1) View stock 2) Buy stock 3) Sell stock 4) Exit\n";
+    cout<<endl;
     cin >> ch;
     if (ch == 1) {
         t.viewPortfolio();
     } else if (ch == 2) {
-        int result = 0; // Uncomment if system(exePath) is used
+        Cleardisplay();
+        yellow();
+        int result = 0;//system(exePath);
         if (result == 0) {
             cout << "Simulator executed successfully." << endl;
+            reset();
+            cout<<endl;
             buystock(t);
         } else {
             cerr << "Failed to execute the simulator." << endl;
         }
     } else if (ch == 3) {
+        Cleardisplay();
         sell(t);
     } else {
         exit(0);
@@ -388,8 +485,10 @@ int main() {
     cout << "Enter choice: ";
     cin >> choice;
     if (choice == 1) {
+        Cleardisplay();
         trader.createUser();
     } else if (choice == 2) {
+        Cleardisplay();
         trader.login();
     } else {
         cout << "Invalid choice.\n";
