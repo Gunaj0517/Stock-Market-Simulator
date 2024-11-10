@@ -479,10 +479,12 @@ void portfolio(Trader &t) {
     } else if (ch == 4) {
         Cleardisplay();
         system(exeFluctuator);
+        clearScreen();
         portfolio(t);
     } else if (ch == 5) {
         Cleardisplay();
         system(exePredictor);
+        Cleardisplay();
         portfolio(t);
     } else {
         exit(0);
