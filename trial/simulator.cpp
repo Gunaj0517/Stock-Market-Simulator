@@ -1,26 +1,27 @@
-#include <iostream> 
+#include <iostream>
 #include <cstring>
 #include <map>
 #include <ctime>
 #include <fstream>
 #include <vector>
+#include <conio.h>
 #include "linkedlistfunction.h"
 
 #include <cstdlib> // for using system()
 
 using namespace std;
-const char* exePath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\simulator.exe";
-const char* exeFluctuator = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\fluctuator.exe";
-const char* exePredictor = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\predictor.exe";
+const char *exePath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\simulator.exe";
+const char *exeFluctuator = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\fluctuator.exe";
+const char *exePredictor = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\predictor.exe";
 
-void Cleardisplay() {
+void Cleardisplay()
+{
     system("cls"); // Clear the console screen
 }
 void clearScreen()
 {
-    char ch;
-    cout<<"Enter any key to continue: ";
-    cin>>ch;
+    cout << "\e[1mPRESS ANY KEY TO CONTINUE...\e[m";
+    getch();
     Cleardisplay();
 }
 void blue()
@@ -52,16 +53,17 @@ void highlight()
     printf("\033[0;41m");
 }
 
-
 Node *STOCKS = createStockList();
 class Trader;
 void portfolio(Trader &t);
 
-class Stock {
+class Stock
+{
 private:
     string symbol;
     double price;
     int qtyavail;
+
 public:
     Stock(const string &sym, double pr, int qty) : symbol(sym), price(pr), qtyavail(qty) {}
 
@@ -71,12 +73,14 @@ public:
     int getQty() const { return qtyavail; }
     string getSymbol() const { return symbol; }
 
-    void displayStock() const {
+    void displayStock() const
+    {
         cout << "Symbol: " << symbol << ", Price: " << price << ", Quantity Available: " << qtyavail << endl;
     }
 };
 
-class Trader {
+class Trader
+{
 private:
     string id;
     string name;
@@ -90,27 +94,32 @@ public:
     friend void buystock(Trader &t1);
     friend void updateUserBalance(Trader &t);
     friend void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSymbol, Node *STOCKS);
-    
-    void login() {
+
+    void login()
+    {
         string inputID, inputPassword;
         cout << "Enter your Login ID: ";
         cin >> inputID;
         cout << "Enter your Password: ";
         cin >> inputPassword;
-        if (checkPasswordMatch(inputID, inputPassword)) {
+        if (checkPasswordMatch(inputID, inputPassword))
+        {
             Cleardisplay();
             yellow();
             cout << "Logged in successfully!" << endl;
             reset();
-            cout<<endl;
+            cout << endl;
             portfolio(*this);
-        } else {
+        }
+        else
+        {
             cout << "Re-enter your ID and Password!" << endl;
             login();
         }
     }
 
-    void createUser() {
+    void createUser()
+    {
         ofstream file("user_data.txt", ios::app); // Append mode to add multiple users
         balance = 15000;
         cout << "Welcome To The Simulator" << endl;
@@ -121,7 +130,8 @@ public:
         cout << "Create your password: ";
         cin >> password;
 
-        if (!file.is_open()) {
+        if (!file.is_open())
+        {
             cerr << "Error opening file." << endl;
             return;
         }
@@ -135,10 +145,12 @@ public:
         login();
     }
 
-    bool checkPasswordMatch(const string& inputID, const string& inputPassword) {
+    bool checkPasswordMatch(const string &inputID, const string &inputPassword)
+    {
         ifstream file("user_data.txt");
 
-        if (!file.is_open()) {
+        if (!file.is_open())
+        {
             cerr << "Error opening file." << endl;
             return false;
         }
@@ -148,11 +160,14 @@ public:
         bool matchFound = false;
 
         // Read each line and extract user details
-        while (file >> storedID >> storedName >> storedPassword >> storedBalance) {
+        while (file >> storedID >> storedName >> storedPassword >> storedBalance)
+        {
             // Check if the ID matches, then check if the password matches
-            if (storedID == inputID) {
+            if (storedID == inputID)
+            {
                 matchFound = (inputPassword == storedPassword);
-                if (matchFound) {
+                if (matchFound)
+                {
                     id = storedID;
                     name = storedName;
                     balance = storedBalance;
@@ -162,12 +177,14 @@ public:
         }
         file.close();
         return matchFound;
-    }    
+    }
 
     // Save purchase to file as a Trader member function
-    void savePurchaseToFile(const Stock &stock, int quantity) {
+    void savePurchaseToFile(const Stock &stock, int quantity)
+    {
         ofstream file("trader_portfolio.txt", ios::app);
-        if (!file.is_open()) {
+        if (!file.is_open())
+        {
             cerr << "Error opening file to save purchase." << endl;
             return;
         }
@@ -179,9 +196,11 @@ public:
     }
 
     // View portfolio as a Trader member function
-    void viewPortfolio() {
+    void viewPortfolio()
+    {
         ifstream file("trader_portfolio.txt");
-        if (!file.is_open()) {
+        if (!file.is_open())
+        {
             cerr << "Error opening portfolio file." << endl;
             return;
         }
@@ -193,26 +212,34 @@ public:
         int stockQuantity;
         bool hasStocks = false;
 
-        while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> balance) {
-            if (traderID == id) {
+        while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> balance)
+        {
+            if (traderID == id)
+            {
                 hasStocks = true;
-                cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << "\t" << balance <<endl;
+                cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << "\t" << balance << endl;
             }
         }
 
         int val;
-        cout<<endl<<"Enter 1 to Move to Home Page:\nEnter 2 to Sell Stocks: ";
-        cin>>val;
-        if(val==2){
+        cout << endl
+             << "Enter 1 to Move to Home Page:\nEnter 2 to Sell Stocks: ";
+        cin >> val;
+        if (val == 2)
+        {
             return;
         }
-        else{
+        else
+        {
             clearScreen();
             portfolio(*this);
         }
 
-        if (!hasStocks) {
-            cout << "No stocks in your portfolio.\n"<<endl<<endl;
+        if (!hasStocks)
+        {
+            cout << "No stocks in your portfolio.\n"
+                 << endl
+                 << endl;
             clearScreen();
             portfolio(*this);
         }
@@ -220,15 +247,19 @@ public:
     }
 };
 
-class Market {
+class Market
+{
 private:
     map<string, Stock> stocks;
 };
 
-Node* findStockNode(Node *head, const string &symbol) {
+Node *findStockNode(Node *head, const string &symbol)
+{
     Node *current = head;
-    while (current != nullptr) {
-        if (current->symbol == symbol) {
+    while (current != nullptr)
+    {
+        if (current->symbol == symbol)
+        {
             return current;
         }
         current = current->next;
@@ -236,12 +267,14 @@ Node* findStockNode(Node *head, const string &symbol) {
     return nullptr;
 }
 
-void updateUserBalance(Trader &t) {
+void updateUserBalance(Trader &t)
+{
     // Read current user data
     ifstream file("user_data.txt");
     ofstream tempFile("temp_user_data.txt");
-    
-    if (!file.is_open() || !tempFile.is_open()) {
+
+    if (!file.is_open() || !tempFile.is_open())
+    {
         cerr << "Error opening files." << endl;
         return;
     }
@@ -250,8 +283,10 @@ void updateUserBalance(Trader &t) {
     double storedBalance;
 
     // Update balance for the trader
-    while (file >> storedID >> storedName >> storedPassword >> storedBalance) {
-        if (storedID == t.id) {
+    while (file >> storedID >> storedName >> storedPassword >> storedBalance)
+    {
+        if (storedID == t.id)
+        {
             storedBalance = t.balance; // Update balance for the current trader
         }
         // Write back to temp file
@@ -266,75 +301,91 @@ void updateUserBalance(Trader &t) {
     rename("temp_user_data.txt", "user_data.txt");
 }
 
-void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSymbol, Node *STOCKS) {
+void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSymbol, Node *STOCKS)
+{
     show(STOCKS, selectedSymbol);
     Node *selectedStockNode = findStockNode(STOCKS, selectedSymbol);
-    if (selectedStockNode == nullptr) {
+    if (selectedStockNode == nullptr)
+    {
         cout << "Stock not found!" << endl;
         return;
     }
 
     Stock selectedStock(selectedSymbol, selectedStockNode->price, selectedStockNode->qtyAvailable);
-    //stock object
-    
+    // stock object
+
     cout << "Enter quantity you want to buy for " << selectedSymbol << ": ";
     int quantity;
     cin >> quantity;
 
-    if (selectedStock.getQty() < quantity) {
+    if (selectedStock.getQty() < quantity)
+    {
         cout << "Quantity exceeded. Choose between 0 and " << selectedStock.getQty() << ":\n";
         buystock(t1);
-    } else {
+    }
+    else
+    {
         int total = quantity * selectedStock.getPrice();
-        if (t1.balance >= total) {
+        if (t1.balance >= total)
+        {
             t1.balance -= total;
             t1.savePurchaseToFile(selectedStock, quantity);
             updateUserBalance(t1); // Update user balance in the user_data.txt
             cout << "Purchase successful! New balance: " << t1.balance << "\n";
             portfolio(t1);
-        } else {
-            cout << "Insufficient balance.\n" << endl;
+        }
+        else
+        {
+            cout << "Insufficient balance.\n"
+                 << endl;
             buystock(t1);
         }
     }
 }
 
-void buystock(Trader &t1) {
+void buystock(Trader &t1)
+{
     int stockChoice;
     cout << "Choose the stock you want to view for purchase:\n";
     cout << "1) AAPL   2) GOOGL   3) MSFT   4) AMZN   5) META\n";
     cout << "6) TSLA   7) NFLX    8) NVDA   9) DIS    10) JPM\n";
-    cout<<endl;
+    cout << endl;
     cout << "Enter the number of the stock: ";
     cin >> stockChoice;
 
     string symbols[10] = {"AAPL", "GOOGL", "MSFT", "AMZN", "META", "TSLA", "NFLX", "NVDA", "DIS", "JPM"};
 
-    if (stockChoice >= 1 && stockChoice <= 10) {
+    if (stockChoice >= 1 && stockChoice <= 10)
+    {
         string selectedSymbol = symbols[stockChoice - 1];
         processStockPurchase(t1, stockChoice, selectedSymbol, STOCKS);
-    } else {
+    }
+    else
+    {
         cout << "Invalid choice.\n";
         buystock(t1);
     }
 }
 
-void sell(Trader &t2) {
+void sell(Trader &t2)
+{
     cout << "Your current portfolio:\n";
     t2.viewPortfolio();
-    
+
     string stockSymbol;
     cout << "Enter the symbol of the stock you want to sell: ";
     cin >> stockSymbol;
 
     Node *stockNode = findStockNode(STOCKS, stockSymbol);
-    if (stockNode == nullptr) {
+    if (stockNode == nullptr)
+    {
         cout << "Stock not found!\n";
         portfolio(t2);
     }
 
     ifstream file("trader_portfolio.txt");
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         cerr << "Error opening portfolio file." << endl;
         return;
     }
@@ -344,13 +395,15 @@ void sell(Trader &t2) {
     int stockQuantity;
     bool foundStock = false;
     int traderStockQuantity = 0;
-    int bal=0;
+    int bal = 0;
 
     // Read through the portfolio to find the stock
-    while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal) {
-        if (traderID == t2.id && stockSymbol == stockNode->symbol) {
+    while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal)
+    {
+        if (traderID == t2.id && stockSymbol == stockNode->symbol)
+        {
             traderStockQuantity = stockQuantity;
-            //t2.balance=bal;
+            // t2.balance=bal;
             foundStock = true;
             break;
         }
@@ -358,7 +411,8 @@ void sell(Trader &t2) {
 
     file.close();
 
-    if (!foundStock) {
+    if (!foundStock)
+    {
         cout << "You don't own any shares of " << stockSymbol << endl;
         return;
     }
@@ -368,41 +422,51 @@ void sell(Trader &t2) {
     cout << "Enter the quantity you want to sell (max " << traderStockQuantity << "): ";
     cin >> sellQuantity;
 
-    if (sellQuantity > traderStockQuantity || sellQuantity <= 0) {
+    if (sellQuantity > traderStockQuantity || sellQuantity <= 0)
+    {
         cout << "Invalid quantity!\n";
         return;
     }
     double sellPrice = stockNode->price;
 
-    cout<<t2.balance<<" and "<<bal<<" and "<<sellPrice<<" and "<<sellQuantity<<endl;
+    cout << t2.balance << " and " << bal << " and " << sellPrice << " and " << sellQuantity << endl;
     t2.balance += (sellPrice * sellQuantity); // Update the balance
-    cout<<t2.balance<<" and "<<bal<<" and "<<sellPrice<<" and "<<sellQuantity<<endl;
+    cout << t2.balance << " and " << bal << " and " << sellPrice << " and " << sellQuantity << endl;
 
     ofstream outFile("trader_portfolio_temp.txt");
-    if (!outFile.is_open()) {
+    if (!outFile.is_open())
+    {
         cerr << "Error opening temp portfolio file." << endl;
         return;
     }
 
     ifstream inFile("trader_portfolio.txt");
-    if (!inFile.is_open()) {
+    if (!inFile.is_open())
+    {
         cerr << "Error opening original portfolio file." << endl;
         return;
     }
 
     // Copy data to a temporary file and update stock quantity
-    while (inFile >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal) {
-        if (traderID == t2.id && stockSymbol == stockNode->symbol) {
+    while (inFile >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal)
+    {
+        if (traderID == t2.id && stockSymbol == stockNode->symbol)
+        {
             // Subtract the quantity being sold
             stockQuantity -= sellQuantity;
-            if (stockQuantity > 0) {
+            if (stockQuantity > 0)
+            {
                 outFile << traderID << " " << stockSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << endl;
-            } else {
+            }
+            else
+            {
                 // If quantity is zero, don't write the stock
                 cout << "All shares of " << stockSymbol << " sold.\n";
             }
-        } else {
-                outFile << traderID << " " << stockSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << endl;
+        }
+        else
+        {
+            outFile << traderID << " " << stockSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << endl;
         }
     }
 
@@ -422,93 +486,170 @@ void sell(Trader &t2) {
 void returnPortfolioValues(Trader &t)
 {
     ifstream file("user_data.txt");
-    if (!file.is_open()) {
+    if (!file.is_open())
+    {
         cerr << "Error: Could not open file.\n";
-        return ;
+        return;
     }
 
     string searchID;
-    searchID=t.id;
+    searchID = t.id;
 
     string id, name, password;
     int balance;
     bool found = false;
 
-    while (file >> id >> name >> password >> balance) {
-        if (id == searchID) {
-            t.balance=balance;
-            green();
-            cout << "Welcome " << name << std::endl;
-            cout << "Your Current Balance is: " << balance << std::endl;
-            reset();
+    while (file >> id >> name >> password >> balance)
+    {
+        if (id == searchID)
+        {
+            t.balance = balance;
+            cout << "\n\n\n\e[1;31m+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "\e[1;33m                                                                                        WELCOME TO   \e[m                                                                                    "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "\e[1;33m                                                                                           " << name << "  \e[m                                                                                     "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m"
+                 << "\e[m"
+                 << "                                                                                                                                                                                         "
+                 << "\e[1;31m"
+                 << "\e[m\n";
+            cout << "\e[1;31m+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+\e[m";
+            cout << endl
+                 << endl
+                 << endl
+                 << endl;
+            cout << "\e[1mYOUR CURRENT BALANCE IS : " << balance <<"\e[m"<< endl;
+            clearScreen();
             found = true;
             break;
         }
     }
-    if (!found) {
+    if (!found)
+    {
         cout << "ID not found.\n";
     }
 
     file.close();
-    return ;
+    return;
 }
 
-void portfolio(Trader &t) {
+void portfolio(Trader &t)
+{
     returnPortfolioValues(t);
     int ch;
-    cout << "Enter your choice: 1) View stock 2) Buy stock 3) Sell stock 4) Fluctuator 5) Predictor 6)Exit\n";
-    cout<<endl;
+    cout << "Enter your choice : 1) View stock 2) Buy stock 3) Sell stock 4) Fluctuator 5) Predictor 6) Exit\n";
+    cout << endl;
     cin >> ch;
-    if (ch == 1) {
+    if (ch == 1)
+    {
         t.viewPortfolio();
-    } else if (ch == 2) {
+    }
+    else if (ch == 2)
+    {
         Cleardisplay();
         yellow();
-        int result = 0;//system(exePath);
-        if (result == 0) {
+        int result = 0; // system(exePath);
+        if (result == 0)
+        {
             cout << "Simulator executed successfully." << endl;
             reset();
-            cout<<endl;
+            cout << endl;
             buystock(t);
-        } else {
+        }
+        else
+        {
             cerr << "Failed to execute the simulator." << endl;
         }
-    } else if (ch == 3) {
+    }
+    else if (ch == 3)
+    {
         Cleardisplay();
         sell(t);
-    } else if (ch == 4) {
+    }
+    else if (ch == 4)
+    {
         Cleardisplay();
         system(exeFluctuator);
         clearScreen();
         portfolio(t);
-    } else if (ch == 5) {
+    }
+    else if (ch == 5)
+    {
         Cleardisplay();
         system(exePredictor);
         clearScreen();
         portfolio(t);
-    } else {
+    }
+    else
+    {
         exit(0);
     }
 }
 
-int main() {
+int main()
+{
     Trader trader;
     int choice;
     cout << "1) Create Account  2) Login\n";
     cout << "Enter choice: ";
     cin >> choice;
-    if (choice == 1) {
+    if (choice == 1)
+    {
         Cleardisplay();
         trader.createUser();
-    } else if (choice == 2) {
+    }
+    else if (choice == 2)
+    {
         Cleardisplay();
         trader.login();
-    } else {
+    }
+    else
+    {
         cout << "Invalid choice.\n";
     }
     return 0;
 }
 
-
 /* g++ simulator.cpp linkedlistfunction.cpp -o simulator -DMAIN_FUNCTION_LINKEDLIST */
-
