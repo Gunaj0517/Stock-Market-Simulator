@@ -9,8 +9,8 @@
 #include <cstdlib> // for using system()
 
 using namespace std;
-const char* exePath = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
-const char* exeFluctuator = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\fluctuator.exe";
+const char* exePath = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\simulator.exe";
+const char* exeFluctuator = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\fluctuator.exe";
 const char* exePredictor = "C:\\Users\\lenovo\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\predictor.exe";
 
 void Cleardisplay() {
@@ -484,7 +484,7 @@ void portfolio(Trader &t) {
     } else if (ch == 5) {
         Cleardisplay();
         system(exePredictor);
-        Cleardisplay();
+        clearScreen();
         portfolio(t);
     } else {
         exit(0);

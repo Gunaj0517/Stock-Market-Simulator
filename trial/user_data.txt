@@ -1,4 +1,1 @@
-gc gunaj ps 15000
-gc gunaj ps 15000
-yg yashi ts 15000
-ur urvashi uru 12134.2
+gc gunaj kk 5808.32
