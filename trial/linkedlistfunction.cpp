@@ -16,8 +16,8 @@ struct Node {
 // Function to create and initialize linked list with stock data
 Node* createStockList() {
     string symbols[MAX_STOCKS] = {"AAPL", "GOOGL", "MSFT", "AMZN", "META","TSLA", "NFLX", "NVDA", "DIS", "JPM"};
-    double prices[MAX_STOCKS] = {230.665, 173.52, 416.3, 191.6, 573.25, 256.17, 755.3, 137.94, 95.02, 224.74};
-    int qtyAvailable[MAX_STOCKS] = {6106, 9697, 27660, 12323, 18750, 18033, 419, 71561, 293, 403};
+    double prices[MAX_STOCKS] = {223.81, 180.12, 417.47, 206.36, 582.28, 357.79, 804.9, 144.81, 100.875, 239.37};
+    int qtyAvailable[MAX_STOCKS] = {6626, 577, 1537, 1540, 1652, 22154, 151, 58250, 1141, 140};
 
     Node* head = nullptr; // Initialize head of the linked list
     Node* current = nullptr;

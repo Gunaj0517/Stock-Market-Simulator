@@ -58,7 +58,7 @@ int main() {
         cout<<"Enter the stock symbol for which you want to find the Predicted Values: ";
          cin>>symbol;
         string symbols[10] = {"AAPL", "GOOGL", "MSFT", "AMZN", "META","TSLA", "NFLX", "NVDA", "DIS", "JPM"};
-        double prices[10] = {230.665, 173.52, 416.3, 191.6, 573.25, 256.17, 755.3, 137.94, 95.02, 224.74};
+        double prices[10] =  {223.81, 180.12, 417.47, 206.36, 582.28, 357.79, 804.9, 144.81, 100.875, 239.37};
 
         for(int i=0;i<10;i++)
         {
