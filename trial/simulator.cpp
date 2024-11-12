@@ -406,41 +406,38 @@ void buystock(Trader &t1)
     }
 }
 
-void sell(Trader &t2)
-{
-    cout << "Your current portfolio :\n";
+void sell(Trader &t2) {
+     cout << "Your current portfolio:\n";
     t2.viewPortfolio(t2);
 
-    string stockSymbol;
-    cout << "Enter the symbol of the stock you want to sell : ";
-    cin >> stockSymbol;
+     string stockSymbol;
+     cout << "Enter the symbol of the stock you want to sell: ";
+     cin >> stockSymbol;
 
     Node *stockNode = findStockNode(STOCKS, stockSymbol);
-    if (stockNode == nullptr)
-    {
-        cout << "Stock not found!\n";
+    if (stockNode == nullptr) {
+         cout << "Stock not found!\n";
         portfolio(t2);
         return;
     }
 
-    ifstream file("trader_portfolio.txt");
-    if (!file.is_open())
-    {
-        cerr << "Error opening portfolio file.\n";
+     ifstream file("trader_portfolio.txt");
+    if (!file.is_open()) {
+         cerr << "Error opening portfolio file.\n";
         return;
     }
 
-    std::string traderID;
+     string traderID;
+     string readSymbol;
     double stockPrice;
     int stockQuantity;
+    int bal;
     bool foundStock = false;
     int traderStockQuantity = 0;
-    int bal = 0;
 
-    while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal)
-    {
-        if (traderID == t2.id && stockSymbol == stockNode->symbol)
-        {
+    // Check if the trader owns the stock and determine the quantity
+    while (file >> traderID >> readSymbol >> stockPrice >> stockQuantity >> bal) {
+        if (traderID == t2.id && readSymbol == stockSymbol) {
             traderStockQuantity = stockQuantity;
             foundStock = true;
             break;
@@ -449,77 +446,83 @@ void sell(Trader &t2)
 
     file.close();
 
-    if (!foundStock)
-    {
-        cout << "You don't own any shares of " << stockSymbol << "\n";
+    if (!foundStock) {
+         cout << "You don't own any shares of " << stockSymbol << "\n";
         return;
     }
 
-    cout << "You own " << traderStockQuantity << " shares of " << stockSymbol << "\n";
+     cout << "You own " << traderStockQuantity << " shares of " << stockSymbol << "\n";
     int sellQuantity;
-    cout << "Enter the quantity you want to sell (max " << traderStockQuantity << "): ";
-    cin >> sellQuantity;
+     cout << "Enter the quantity you want to sell (max " << traderStockQuantity << "): ";
+     cin >> sellQuantity;
 
-    if (sellQuantity > traderStockQuantity || sellQuantity <= 0)
-    {
-        cout << "Invalid quantity!\n";
+    if (sellQuantity > traderStockQuantity || sellQuantity <= 0) {
+         cout << "Invalid quantity!\n";
         return;
     }
 
     double sellPrice = stockNode->price;
-    t2.balance += (sellPrice * sellQuantity);
+    t2.balance += (sellPrice * sellQuantity); // Update trader balance after sale
 
-    ofstream outFile("trader_portfolio_temp.txt");
-    if (!outFile.is_open())
-    {
-        cerr << "Error opening temp portfolio file.\n";
+     ifstream inFile("trader_portfolio.txt");
+     ofstream outFile("trader_portfolio_temp.txt");
+
+    if (!inFile.is_open() || !outFile.is_open()) {
+         cerr << "Error opening files.\n";
         return;
     }
 
-    ifstream inFile("trader_portfolio.txt");
-    if (!inFile.is_open())
-    {
-        cerr << "Error opening original portfolio file.\n";
-        return;
-    }
+    bool updated = false;
 
-    while (inFile >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal)
-    {
-        if (traderID == t2.id && stockSymbol == stockNode->symbol)
-        {
+    // Process each record in the portfolio file
+    while (inFile >> traderID >> readSymbol >> stockPrice >> stockQuantity >> bal) {
+        if (traderID == t2.id && readSymbol == stockSymbol) {
+            // Adjust quantity if it's the stock being sold
             stockQuantity -= sellQuantity;
-            if (stockQuantity > 0)
-            {
-                outFile << traderID << " " << stockSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << "\n";
+            if (stockQuantity > 0) {
+                // Write updated stock quantity and new balance for the trader's record
+                outFile << traderID << " " << readSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << "\n";
+            } else {
+                // Write the record with zero quantity to indicate all shares are sold
+                outFile << traderID << " " << readSymbol << " " << stockPrice << " " << 0 << " " << t2.balance << "\n";
+                 cout << "All shares of " << stockSymbol << " sold.\n";
             }
-            else
-            {
-                cout << "All shares of " << stockSymbol << " sold.\n";
-            }
-        }
-        else
-        {
-            outFile << traderID << " " << stockSymbol << " " << stockPrice << " " << stockQuantity << " " << bal << "\n";
+            updated = true;
+        } else if (traderID == t2.id) {
+            // For other stocks owned by the same trader, update the balance
+            outFile << traderID << " " << readSymbol << " " << stockPrice << " " << stockQuantity << " " << t2.balance << "\n";
+        } else {
+            // Write other traders' records unchanged
+            outFile << traderID << " " << readSymbol << " " << stockPrice << " " << stockQuantity << " " << bal << "\n";
         }
     }
 
     inFile.close();
     outFile.close();
 
-    if (remove("trader_portfolio.txt") != 0)
-    {
-        cerr << "Error deleting original portfolio file.\n";
+    // Ensure files are closed before performing delete or rename operations
+     cout << "File streams closed. Attempting to delete the original portfolio file.\n";
+
+    if (remove("trader_portfolio.txt") != 0) {
+         cerr << "Error deleting original portfolio file.\n";
+         perror("trader_portfolio.txt");
+    } else {
+         cout << "Original portfolio file deleted successfully.\n";
     }
-    else if (std::rename("trader_portfolio_temp.txt", "trader_portfolio.txt") != 0)
-    {
-        cerr << "Error renaming temp file to portfolio file.\n";
-    }
-    else
-    {
-        std::cout << "Sale successful! New balance: " << t2.balance << "\n";
+
+    if ( rename("trader_portfolio_temp.txt", "trader_portfolio.txt") != 0) {
+         cerr << "Error renaming temp file to portfolio file.\n";
+         perror("trader_portfolio_temp.txt");
+    } else {
+         cout << "Temp file renamed successfully to portfolio file.\n";
+         cout << "Sale successful! New balance: " << t2.balance << "\n";
         portfolio(t2);
-        updateUserBalance(t2);
+        updateUserBalance(t2); // Update user balance in balance.txt
     }
+
+    // Debug: Show the updated portfolio
+     cout << "\nUpdated portfolio:\n";
+    t2.viewPortfolio(t2);
 }
 
 void returnPortfolioValues(Trader &t)
