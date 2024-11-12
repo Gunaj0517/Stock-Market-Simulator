@@ -106,7 +106,8 @@ public:
         {
             Cleardisplay();
             green();
-            cout << endl<<"                                                                                   \e[1mLogged in Successfully!\e[m" << endl;
+            cout << endl
+                 << "                                                                                   \e[1mLogged in Successfully!\e[m" << endl;
             reset();
             cout << endl;
             portfolio(*this);
@@ -206,24 +207,46 @@ public:
         }
 
         Cleardisplay();
-        cout << "Reading portfolio for ID: " << id << endl;
+        yellow();
+        cout << endl
+             << endl
+             << "Reading portfolio for ID: " << id << endl<<endl;
+        reset();
         string traderID, stockSymbol;
         double stockPrice;
         int stockQuantity;
         bool hasStocks = false;
-
+        cout << "                                                    x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x\n";
+        yellow();
+        cout << endl
+             << endl
+             << endl
+             << "\t\t\t\t\t                       Stock     Stock Price        Stock Quantity    Balance";
+        reset();
         while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> balance)
         {
             if (traderID == id)
             {
                 hasStocks = true;
-                cout << stockSymbol << "\t" << stockPrice << "\t " << stockQuantity << "\t" << balance << endl;
+                blue();
+                cout << "\n                                                                " << stockSymbol << "\t   " << stockPrice << "\t\t " << stockQuantity << "\t\t" << balance << endl;
+                reset();
             }
         }
-
+        cout << "\n\n\n                                                    x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x\n\n";
+        clearScreen();
         int val;
+        cout << "\e[1;35m                                                                                      +====================================+\e[m" << endl;
+        cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+        cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+        cout << "\e[1;35m                                                                                      |\e[m            1)Home Page             \e[1;35m|\e[m" << endl;
+        cout << "\e[1;35m                                                                                      |\e[m            2)Sell Stocks           \e[1;35m|\e[m" << endl;
+        cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+        cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+        cout << "\e[1;35m                                                                                      +====================================+\e[m" << endl;
         cout << endl
-             << "Enter 1 to Move to Home Page:\nEnter 2 to Sell Stocks: ";
+             << endl
+             << "\e[1mEnter your choice : \e[m";
         cin >> val;
         if (val == 2)
         {
@@ -231,7 +254,7 @@ public:
         }
         else
         {
-            clearScreen();
+            Cleardisplay();
             portfolio(*this);
         }
 
