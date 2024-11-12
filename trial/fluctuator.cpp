@@ -84,7 +84,7 @@ int main() {
             tempQueue.pop();
         }
 
-        sleep(10);  // Wait for 10 seconds
+        sleep(2);  // Wait for 10 seconds
 
         fluctuationCount++;
     }
