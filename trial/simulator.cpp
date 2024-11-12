@@ -105,8 +105,8 @@ public:
         if (checkPasswordMatch(inputID, inputPassword))
         {
             Cleardisplay();
-            yellow();
-            cout << "Logged in successfully!" << endl;
+            green();
+            cout << endl<<"                                                                                   \e[1mLogged in Successfully!\e[m" << endl;
             reset();
             cout << endl;
             portfolio(*this);
@@ -527,7 +527,7 @@ void returnPortfolioValues(Trader &t)
                  << "\e[m\n";
             cout << "\e[1;31m"
                  << "\e[m"
-                 << "\e[1;33m                                                                                        WELCOME TO   \e[m                                                                                    "
+                 << "\e[1;33m                                                                                          WELCOME      \e[m                                                                                    "
                  << "\e[1;31m"
                  << "\e[m\n";
             cout << "\e[1;31m"
@@ -560,7 +560,11 @@ void returnPortfolioValues(Trader &t)
                  << endl
                  << endl
                  << endl;
-            cout << "\e[1mYOUR CURRENT BALANCE IS : " << balance <<"\e[m"<< endl;
+            cout << "\e[1mYOUR CURRENT BALANCE IS : " << balance << "\e[m" << endl
+                 << endl
+                 << endl
+                 << endl
+                 << endl;
             clearScreen();
             found = true;
             break;
@@ -579,8 +583,21 @@ void portfolio(Trader &t)
 {
     returnPortfolioValues(t);
     int ch;
-    cout << "Enter your choice : 1) View stock 2) Buy stock 3) Sell stock 4) Fluctuator 5) Predictor 6) Exit\n";
-    cout << endl;
+    cout << "\e[1;35m                                                                                      +====================================+\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m             1)View Stock           \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m             2)Buy Stock            \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m             3)Sell Stock           \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m             4)Fluctuator           \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m             5)Predictor            \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m             6)Exit                 \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      +====================================+\e[m" << endl;
+    cout << endl
+         << endl
+         << "\e[1mEnter your choice : \e[m";
     cin >> ch;
     if (ch == 1)
     {
@@ -631,9 +648,19 @@ void portfolio(Trader &t)
 int main()
 {
     Trader trader;
+    Cleardisplay();
     int choice;
-    cout << "1) Create Account  2) Login\n";
-    cout << "Enter choice: ";
+    cout << "\e[1;35m                                                                                      +====================================+\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m            1)Create Account        \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |\e[m            2)Login                 \e[1;35m|\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      |                                    |\e[m" << endl;
+    cout << "\e[1;35m                                                                                      +====================================+\e[m" << endl;
+    cout << endl
+         << endl
+         << "\e[1mEnter your choice : \e[m";
     cin >> choice;
     if (choice == 1)
     {
