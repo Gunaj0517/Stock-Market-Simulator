@@ -6,7 +6,7 @@
 #include <conio.h>
 #include "linkedlistfunction.h"
 
-#include <cstdlib> // for using system()
+#include <cstdlib>
 
 using namespace std;
 const char *exePath = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe\"";
@@ -15,7 +15,7 @@ const char *exePredictor = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-
 
 void Cleardisplay()
 {
-    system("cls"); // Clear the console screen
+    system("cls");
 }
 void clearScreen()
 {
@@ -120,7 +120,7 @@ public:
 
     void createUser()
     {
-        ofstream file("user_data.txt", ios::app); // Append mode to add multiple users
+        ofstream file("user_data.txt", ios::app); 
         balance = 15000;
         cout << "\n\n\n\e[1;31m+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+\e[m\n";
         cout << "\e[1;31m"
@@ -187,7 +187,6 @@ public:
             return;
         }
 
-        // Write user details to file in a structured way
         file << id << " " << name << " " << password << " " << balance << endl;
         file.close();
         green();
@@ -211,10 +210,8 @@ public:
         double storedBalance;
         bool matchFound = false;
 
-        // Read each line and extract user details
         while (file >> storedID >> storedName >> storedPassword >> storedBalance)
         {
-            // Check if the ID matches, then check if the password matches
             if (storedID == inputID)
             {
                 matchFound = (inputPassword == storedPassword);
@@ -231,7 +228,6 @@ public:
         return matchFound;
     }
 
-    // Save purchase to file as a Trader member function
     void savePurchaseToFile(const Stock &stock, int quantity)
     {
         ofstream file("trader_portfolio.txt", ios::app);
@@ -247,7 +243,6 @@ public:
         file.close();
     }
 
-    // View portfolio as a Trader member function
     void viewPortfolio(Trader &t)
     {
         ifstream file("trader_portfolio.txt");
@@ -313,7 +308,6 @@ Node *findStockNode(Node *head, const string &symbol)
 
 void updateUserBalance(Trader &t)
 {
-    // Read current user data
     ifstream file("user_data.txt");
     ofstream tempFile("temp_user_data.txt");
 
@@ -326,7 +320,6 @@ void updateUserBalance(Trader &t)
     string storedID, storedName, storedPassword;
     double storedBalance;
 
-    // Update balance for the trader
     while (file >> storedID >> storedName >> storedPassword >> storedBalance)
     {
         if (storedID == t.id)
@@ -339,14 +332,11 @@ void updateUserBalance(Trader &t)
             cout << "No match for user: " << storedID << " (expected: " << t.id << ")" << endl;
         }
 
-        // Write back to temp file
         tempFile << storedID << " " << storedName << " " << storedPassword << " " << storedBalance << endl;
     }
 
     file.close();
     tempFile.close();
-
-    // Replace the original file with the updated one
     remove("user_data.txt");
     rename("temp_user_data.txt", "user_data.txt");
 }
@@ -362,7 +352,6 @@ void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSym
     }
 
     Stock selectedStock(selectedSymbol, selectedStockNode->price, selectedStockNode->qtyAvailable);
-    // stock object
 
     cout << "Enter quantity you want to buy for " << selectedSymbol << " : ";
     int quantity;
@@ -380,7 +369,7 @@ void processStockPurchase(Trader &t1, int stockChoice, const string &selectedSym
         {
             t1.balance -= total;
             t1.savePurchaseToFile(selectedStock, quantity);
-            updateUserBalance(t1); // Update user balance in the user_data.txt
+            updateUserBalance(t1);
             cout << "Purchase successful! New balance: " << t1.balance << "\n";
             portfolio(t1);
         }
@@ -419,25 +408,25 @@ void buystock(Trader &t1)
 
 void sell(Trader &t2)
 {
-    std::cout << "Your current portfolio :\n";
+    cout << "Your current portfolio :\n";
     t2.viewPortfolio(t2);
 
-    std::string stockSymbol;
-    std::cout << "Enter the symbol of the stock you want to sell : ";
-    std::cin >> stockSymbol;
+    string stockSymbol;
+    cout << "Enter the symbol of the stock you want to sell : ";
+    cin >> stockSymbol;
 
     Node *stockNode = findStockNode(STOCKS, stockSymbol);
     if (stockNode == nullptr)
     {
-        std::cout << "Stock not found!\n";
+        cout << "Stock not found!\n";
         portfolio(t2);
-        return; // Added return to prevent further execution
+        return;
     }
 
-    std::ifstream file("trader_portfolio.txt");
+    ifstream file("trader_portfolio.txt");
     if (!file.is_open())
     {
-        std::cerr << "Error opening portfolio file.\n";
+        cerr << "Error opening portfolio file.\n";
         return;
     }
 
@@ -448,7 +437,6 @@ void sell(Trader &t2)
     int traderStockQuantity = 0;
     int bal = 0;
 
-    // Read through the portfolio to find the stock
     while (file >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal)
     {
         if (traderID == t2.id && stockSymbol == stockNode->symbol)
@@ -463,39 +451,38 @@ void sell(Trader &t2)
 
     if (!foundStock)
     {
-        std::cout << "You don't own any shares of " << stockSymbol << "\n";
+        cout << "You don't own any shares of " << stockSymbol << "\n";
         return;
     }
 
-    std::cout << "You own " << traderStockQuantity << " shares of " << stockSymbol << "\n";
+    cout << "You own " << traderStockQuantity << " shares of " << stockSymbol << "\n";
     int sellQuantity;
-    std::cout << "Enter the quantity you want to sell (max " << traderStockQuantity << "): ";
-    std::cin >> sellQuantity;
+    cout << "Enter the quantity you want to sell (max " << traderStockQuantity << "): ";
+    cin >> sellQuantity;
 
     if (sellQuantity > traderStockQuantity || sellQuantity <= 0)
     {
-        std::cout << "Invalid quantity!\n";
+        cout << "Invalid quantity!\n";
         return;
     }
 
     double sellPrice = stockNode->price;
-    t2.balance += (sellPrice * sellQuantity); // Update the balance
+    t2.balance += (sellPrice * sellQuantity);
 
-    std::ofstream outFile("trader_portfolio_temp.txt");
+    ofstream outFile("trader_portfolio_temp.txt");
     if (!outFile.is_open())
     {
-        std::cerr << "Error opening temp portfolio file.\n";
+        cerr << "Error opening temp portfolio file.\n";
         return;
     }
 
-    std::ifstream inFile("trader_portfolio.txt");
+    ifstream inFile("trader_portfolio.txt");
     if (!inFile.is_open())
     {
-        std::cerr << "Error opening original portfolio file.\n";
+        cerr << "Error opening original portfolio file.\n";
         return;
     }
 
-    // Copy data to a temporary file and update stock quantity
     while (inFile >> traderID >> stockSymbol >> stockPrice >> stockQuantity >> bal)
     {
         if (traderID == t2.id && stockSymbol == stockNode->symbol)
@@ -507,7 +494,7 @@ void sell(Trader &t2)
             }
             else
             {
-                std::cout << "All shares of " << stockSymbol << " sold.\n";
+                cout << "All shares of " << stockSymbol << " sold.\n";
             }
         }
         else
@@ -519,20 +506,19 @@ void sell(Trader &t2)
     inFile.close();
     outFile.close();
 
-    // Ensure the file streams are closed before renaming
-    if (std::remove("trader_portfolio.txt") != 0)
+    if (remove("trader_portfolio.txt") != 0)
     {
-        std::cerr << "Error deleting original portfolio file.\n";
+        cerr << "Error deleting original portfolio file.\n";
     }
     else if (std::rename("trader_portfolio_temp.txt", "trader_portfolio.txt") != 0)
     {
-        std::cerr << "Error renaming temp file to portfolio file.\n";
+        cerr << "Error renaming temp file to portfolio file.\n";
     }
     else
     {
         std::cout << "Sale successful! New balance: " << t2.balance << "\n";
         portfolio(t2);
-        updateUserBalance(t2); // Update the user balance
+        updateUserBalance(t2);
     }
 }
 
