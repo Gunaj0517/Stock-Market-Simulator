@@ -8,15 +8,10 @@
 
 #include <cstdlib> // for using system()
 
-using namespace std;/*
-const char *exePath = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\simulator.exe\"";
+using namespace std;
+const char *exePath = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe\"";
 const char *exeFluctuator = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\fluctuator.exe\"";
 const char *exePredictor = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\predictor.exe\"";
-*/
-
-const char *exePath = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
-const char *exeFluctuator = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\fluctuator.exe";
-const char *exePredictor = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\predictor.exe";
 
 void Cleardisplay()
 {
@@ -614,11 +609,6 @@ void returnPortfolioValues(Trader &t)
                  << "\e[m\n";
             cout << "\e[1;31m+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+\e[m";
             cout << endl
-                 << endl
-                 << endl
-                 << endl;
-            cout << "\e[1mYOUR CURRENT BALANCE IS : " << balance << "\e[m" << endl
-                 << endl
                  << endl
                  << endl
                  << endl;
