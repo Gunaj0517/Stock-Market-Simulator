@@ -8,10 +8,15 @@
 
 #include <cstdlib> // for using system()
 
-using namespace std;
+using namespace std;/*
 const char *exePath = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\simulator.exe\"";
 const char *exeFluctuator = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\fluctuator.exe\"";
 const char *exePredictor = "\"C:\\Users\\TARUN TIWARI\\OneDrive\\Desktop\\Stock-Market-Simulator\\trial\\predictor.exe\"";
+*/
+
+const char *exePath = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\StockMarketSimulator.exe";
+const char *exeFluctuator = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\fluctuator.exe";
+const char *exePredictor = "C:\\Users\\ICAI\\Desktop\\coding_imp\\Stock-Market-Simulator\\trial\\predictor.exe";
 
 void Cleardisplay()
 {
@@ -331,8 +336,14 @@ void updateUserBalance(Trader &t)
     {
         if (storedID == t.id)
         {
-            storedBalance = t.balance; // Update balance for the current trader
+            storedBalance = t.balance;
+            cout << "Updating balance for user: " << storedID << " to " << storedBalance << endl;
         }
+        else
+        {
+            cout << "No match for user: " << storedID << " (expected: " << t.id << ")" << endl;
+        }
+
         // Write back to temp file
         tempFile << storedID << " " << storedName << " " << storedPassword << " " << storedBalance << endl;
     }
@@ -654,7 +665,7 @@ void portfolio(Trader &t)
     {
         Cleardisplay();
         yellow();
-        int result = system(exePath);
+        int result = 0;//system(exePath);
         if (result == 0)
         {
             cout << "Simulator executed successfully." << endl;
